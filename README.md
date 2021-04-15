@@ -1,23 +1,37 @@
-﻿# CyberBattleSim
+﻿# CyberBattleSim + : Beyond the hype.
+
+# Credits
+
+this project is the clone and improvised version of microsoft researchers , you can get more information regarding their findings in the following blog
 
 > April 8th, 2021: See the [announcement](https://www.microsoft.com/security/blog/2021/04/08/gamifying-machine-learning-for-stronger-security-and-ai-models/) on the Microsoft Security Blog.
+> and their repository README for the initial reference .
 
-CyberBattleSim is an experimentation research platform to investigate the interaction
-of automated agents operating in a simulated abstract enterprise network environment.
-The simulation provides a high-level abstraction of computer networks
-and cyber security concepts.
-Its Python-based Open AI Gym interface allows for training of
-automated agents using reinforcement learning algorithms.
+also there are numerous other repositories available in this field [1](https://github.com/nickromandini/reinforcement-learning-cybersecurity) , [2]()
 
-The simulation environment is parameterized by a fixed network topology
-and a set of vulnerabilities that agents can utilize
-to move laterally in the network.
+# Abstract
+
+Currently CyberBattleSim really is an interesting spark for the researchers in the field for experimenting the use of RL for policy making of better cybersecurity posture analysis . generally this has been considered out of reach problem due to the sheer complexicity of encoding the the states (From the network primitives hosting the TCP/IP stack to the cloud instances providing numerous tech stack and security policies like VPC & WAF / zero trust networks / endpoint detection and response etc) , defining the possible goal policies for real life enterprise networks has been mammoth tasks , specially given that you adversary is also perfected his art of running APT campaigns.
+
+but currently , recent progress in making services which provide agent
+based security , best examples like [sqreen](https://github.com/sqreen/go-agent/tree/master) and the wide suite of verticals ( ci pipelines to run automated tests , checking the CTI features to understand the diffrent results ) has provided an wide ontology in understanding the nature of adversary (whether being an actor or an automated malware underneath with the E2E infrastructure for the whole cybersecurity attack chain ).
+
+Also unlike the previous assumption of using an physical simulator with very limited number of topologies , the simulation will include the tests on the following Enviornments :
+
+1.  [gns3](https://www.gns3.com/) , an basic routing simulation tool for showing the propagation of the network packets in the LAN configurations . trying to detect possiblity of checking the malicious created network packet( using pyscapy) transferring till the firewall simulation.
+
+2.[openstack](https://www.openstack.org/) : An open source application for creating cloud networking envioenment (defining simulation of real time cloud platforms like AWS).
+
 The goal of the attacker is to take ownership of a portion of the network by exploiting
 vulnerabilities that are planted in the computer nodes.
 While the attacker attempts to spread throughout the network,
 a defender agent watches the network activity and tries to detect
 any attack taking place and mitigate the impact on the system
-by evicting the attacker. We provide a basic stochastic defender that detects
+by evicting the attacker.
+
+## TODO : defining the strategy of the adversary agent and defending agent .
+
+We provide a basic stochastic defender that detects
 and mitigates ongoing attacks based on pre-defined probabilities of success.
 We implement mitigation by re-imaging the infected nodes, a process
 abstractly modeled as an operation spanning over multiple simulation steps.
@@ -27,7 +41,7 @@ attain their goal and the cumulative rewards over simulation steps across traini
 
 ## Project goals
 
-We view this project as an experimentation platform to conduct research on the interaction of automated agents in abstract simulated network environments. By open sourcing it we hope to encourage the research community to investigate how cyber-agents interact and evolve in such network environments.
+As told in the parent project , this will be an stepping stone for creating agents that might be working in real time network scenarios . my main aim is to work on the whole simulation enviornment from realistic tools , then getting the required knowledge ontology for each of the agents (based on initially certain types of stateless network attacks from nist cve detection , etc ). this will be an major aim to promote transparency regarding the possible state of the art of these technologies
 
 The simulation we provide is admittedly simplistic, but this has advantages. Its highly abstract nature prohibits direct application to real-world systems thus providing a safeguard against potential nefarious use of automated agents trained with it.
 At the same time, its simplicity allows us to focus on specific security aspects we aim to study and quickly experiment with recent machine learning and AI algorithms.
@@ -46,22 +60,20 @@ Other areas of interest include the responsible and ethical use of autonomous
 cyber-security systems: How to design an enterprise network that gives an intrinsic
 advantage to defender agents? How to conduct safe research aimed at defending enterprises against autonomous cyber-attacks while preventing nefarious use of such technology?
 
-
 ## Documentation
 
 Read the [Quick introduction](/docs/quickintro.md) to the project.
 
 ## Build status
 
-| Type | Branch | Status |
-| ---  | ------ | ------ |
-| CI   | master | ![.github/workflows/ci.yml](https://github.com/microsoft/CyberBattleSim/workflows/.github/workflows/ci.yml/badge.svg) |
+| Type         | Branch | Status                                                                                                                                          |
+| ------------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| CI           | master | ![.github/workflows/ci.yml](https://github.com/microsoft/CyberBattleSim/workflows/.github/workflows/ci.yml/badge.svg)                           |
 | Docker image | master | ![.github/workflows/build-container.yml](https://github.com/microsoft/CyberBattleSim/workflows/.github/workflows/build-container.yml/badge.svg) |
 
 ## Benchmark
 
 See [Benchmark](/docs/benchmark.md).
-
 
 ## Setting up a dev environment
 
@@ -70,14 +82,15 @@ Running Python on Windows directly should work but is not supported anymore.
 
 Start by checking out the repository:
 
-   ```bash
-   git clone https://github.com/microsoft/CyberBattleSim.git
-   ```
+```bash
+git clone https://github.com/microsoft/CyberBattleSim.git
+```
+
+### TODO: add the support for the docker image for the model.
 
 ### On Linux or WSL
 
 The instructions were tested on a Linux Ubuntu distribution (both native and via WSL). Run the following command to set-up your dev environment and install all the required dependencies (apt and pip packages):
-
 
 ```bash
 ./init.sh
@@ -89,105 +102,23 @@ The script will create a [virtual Python environment](https://docs.python.org/3/
 run Python with `venv/bin/python`.
 
 > Note: If you prefer Python from a global installation instead of a virtual environment then you can skip the creation of the virtual envrionment by running the script with `./init.sh -n`. This will instead install all the Python packages on a system-wide installation of Python 3.8.
-#### Windows Subsystem for Linux
-
-The supported dev environment on Windows is via WSL.
-You first need to install an Ubuntu WSL distribution on your Windows machine,
-and then proceed with the Linux instructions (next section).
-
-#### Git authentication from WSL
-
-To authenticate with Git you can either use SSH-based authentication, or
-alternatively use the credential-helper trick to automatically generate a
-PAT token. The latter can be done by running the following commmand under WSL
-([more info here](https://docs.microsoft.com/en-us/windows/wsl/tutorials/wsl-git)):
-
-```ps
-git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe"
-```
-
-#### Docker on WSL
-
-To run your environment within a docker container, we recommend running `docker` via Windows Subsystem on Linux (WSL) using the following instructions:
-[Installing Docker on Windows under WSL](https://docs.docker.com/docker-for-windows/wsl-tech-preview/)).
-
-
-### Windows (unsupported)
-
-This method is not maintained anymore, please prefer instead running under
-a WSL subsystem Linux environment.
-But if you insist you want to start by installing [Python 3.8](https://www.python.org/downloads/windows/) then in a Powershell prompt run the `./init.ps1` script.
-
-
-## Getting started quickly using Docker
-
-
-The quickest method to get up and running is via the Docker container.
-
-> NOTE: For licensing reasons, we do not publicly redistribute any
-> build artifact. In particular the docker registry `spinshot.azurecr.io` referred to
-> in the commands below is kept private to the
-> project maintainers only.
->
-> As a workaround, you can recreate the docker image yourself using the provided `Dockerfile`, publish the resulting image to your own docker registry and replace the registry name in the commands below.
-```bash
-docker login spinshot.azurecr.io
-docker pull spinshot.azurecr.io/cyberbattle:239bdf22e47aa1c8c88915f356cede002865fa1c
-docker run -it spinshot.azurecr.io/cyberbattle:239bdf22e47aa1c8c88915f356cede002865fa1c cyberbattle/agents/baseline/run.py
-```
 
 ## Check your environment
 
-Run the following command to run a simulation with a baseline RL agent:
+TODO
 
-```
-python cyberbattle/agents/baseline/run.py --training_episode_count 1 --eval_episode_count 1 --iteration_count 10 --rewardplot_with 80  --chain_size=20 --ownership_goal 1.0
-```
+## Jupyter and [enso](https://enso.org/) documentations.
 
-If everything is setup correctly you should get an output that looks like this:
-
-```bash
-torch cuda available=True
-###### DQL
-Learning with: episode_count=1,iteration_count=10,ϵ=0.9,ϵ_min=0.1, ϵ_expdecay=5000,γ=0.015, lr=0.01, replaymemory=10000,
-batch=512, target_update=10
-  ## Episode: 1/1 'DQL' ϵ=0.9000, γ=0.015, lr=0.01, replaymemory=10000,
-batch=512, target_update=10
-Episode 1|Iteration 10|reward:  139.0|Elapsed Time: 0:00:00|###################################################################|
-###### Random search
-Learning with: episode_count=1,iteration_count=10,ϵ=1.0,ϵ_min=0.0,
-  ## Episode: 1/1 'Random search' ϵ=1.0000,
-Episode 1|Iteration 10|reward:  194.0|Elapsed Time: 0:00:00|###################################################################|
-simulation ended
-Episode duration -- DQN=Red, Random=Green
-   10.00  ┼
-Cumulative rewards -- DQN=Red, Random=Green
-  194.00  ┼      ╭──╴
-  174.60  ┤      │
-  155.20  ┤╭─────╯
-  135.80  ┤│     ╭──╴
-  116.40  ┤│     │
-   97.00  ┤│    ╭╯
-   77.60  ┤│    │
-   58.20  ┤╯ ╭──╯
-   38.80  ┤  │
-   19.40  ┤  │
-    0.00  ┼──╯
-```
-
-## Jupyter notebooks
-
-To quickly get familiar with the project you can open one the
-the provided Juptyer notebooks to play interactively with
-the gym environments. Just start jupyter with `jupyter notebook`, or
-`venv/bin/jupyter notebook` if you are using a virtual environment setup.
+either you can practice with the already deployed jupyter documentation , along with another amazing data science oriented IDE named Enso , which allows to preprocess and get interesting insights of the network logs wrt the diffrent types of attacks.
 
 - 'Capture The Flag' toy environment notebooks:
+
   - [Random agent](notebooks/toyctf-random.ipynb)
   - [Interactive session for a human player](notebooks/toyctf-blank.ipynb)
   - [Interactive session - fully solved](notebooks/toyctf-solved.ipynb)
 
 - Chain environment notebooks:
+
   - [Random agent](notebooks/chainnetwork-random.ipynb)
 
 - Other environments:
@@ -197,46 +128,24 @@ the gym environments. Just start jupyter with `jupyter notebook`, or
 The following `.py` notebooks are best viewed in VSCode or in Jupyter with the [Jupytext extension](https://jupytext.readthedocs.io/en/latest/install.html)
 and can easily be converted to `.ipynb` format if needed:
 
-  - Chain environments benchmarks:
+- Chain environments benchmarks:
 
-      - [Benchmark of all baseline agents](cyberbattle/agents/baseline/notebooks/notebook_all_agents_benchmark.py)
-      - [All baseline agents against a basic defender](cyberbattle/agents/baseline/notebooks/notebook_withdefender.py)
-      - [DeepQL](cyberbattle/agents/baseline/notebooks/notebook_dql.py)
-      - [Epsilon greedy](cyberbattle/agents/baseline/notebooks/notebook_randlookups.py)
-      - [Tabular Q Learning](cyberbattle/agents/baseline/notebooks/notebook_tabularq.py)
+  - [Benchmark of all baseline agents](cyberbattle/agents/baseline/notebooks/notebook_all_agents_benchmark.py)
+  - [All baseline agents against a basic defender](cyberbattle/agents/baseline/notebooks/notebook_withdefender.py)
+  - [DeepQL](cyberbattle/agents/baseline/notebooks/notebook_dql.py)
+  - [Epsilon greedy](cyberbattle/agents/baseline/notebooks/notebook_randlookups.py)
+  - [Tabular Q Learning](cyberbattle/agents/baseline/notebooks/notebook_tabularq.py)
 
-  - Capture the Flag benchmark:
-    - [DeepQL](cyberbattle/agents/baseline/notebooks/notebook_ctf_dql.py)
+- Capture the Flag benchmark:
+  - [DeepQL](cyberbattle/agents/baseline/notebooks/notebook_ctf_dql.py)
 
-## How to instantiate the Gym environments?
+## How to instantiate the enviornment ?
 
-The following code shows how to create an instance of the the OpenAI Gym environment `CyberBattleChain-v0`, an environment based on a [chain-like network structure](cyberbattle/samples/chainpattern/chainpattern.py), with 10 nodes (`size=10`) where the agent's goal is to either gain full ownership of the network (`own_atleast_percent=1.0`) or
-break the 80% network availability SLA (`maintain_sla=0.80`), while the netowrk is being monitored and protected by basic probalistically-modelled defender (`defender_agent=ScanAndReimageCompromisedMachines`):
-
-```python
-import cyberbattle._env.cyberbattle_env
-
-cyberbattlechain_defender =
-  gym.make('CyberBattleChain-v0',
-      size=10,
-      attacker_goal=AttackerGoal(
-          own_atleast=0,
-          own_atleast_percent=1.0
-      ),
-      defender_constraint=DefenderConstraint(
-          maintain_sla=0.80
-      ),
-      defender_agent=ScanAndReimageCompromisedMachines(
-          probability=0.6,
-          scan_capacity=2,
-          scan_frequency=5))
-```
-
-To try other network topologies, take example on [chainpattern.py](cyberbattle/samples/chainpattern/chainpattern.py) to define your own set of machines and vulnerabilities, then add an entry in [the module initializer](cyberbattle/__init__.py) to declare and register the Gym environment.
+TODO
 
 ## Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
 
@@ -244,17 +153,9 @@ When you submit a pull request, a CLA bot will automatically determine whether y
 a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
 provided by the bot. You will only need to do this once across all repos using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-
 ### Ideas for contributions
 
-Here are some ideas on how to contribute: enhance the simulation (event-based, refined the simulation, …), train an RL algorithm on the existing simulation,
-implement benchmark to evaluate and compare novelty of agents, add more network generative modes to train RL-agent on, contribute to the doc, fix bugs.
-
-See also the [wiki for more ideas](https://github.com/microsoft/CyberBattleGym/wiki/Possible-contributions).
+Apart from the [wiki for more ideas](https://github.com/microsoft/CyberBattleGym/wiki/Possible-contributions). from the microsoft . interested devs can :star: the respository along with giving more information
 
 ## Citing this project
 
@@ -270,16 +171,9 @@ See also the [wiki for more ideas](https://github.com/microsoft/CyberBattleGym/w
 ```
 
 ## Note on privacy
-This project does not include any customer data.
-The provided models and network topologies are purely fictitious.
-Users of the provided code provide all the input to the simulation
-and must have the necessary permissions to use any provided data.
 
+This project does not include any PII ( i.e event / network logs from actual enterprise / cloud network ) and IT SHOULD BE ENSURED FOR DEPLOYING THIS ON REAL TIME USE CASE , PLEASE TAKE INTO CONSIDERATION THE LEGAL REMEDIES INTO ACCOUNT AND DONT BREAK THE CYBER LAWS.
 
 ## Trademarks
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
-trademarks or logos is subject to and must follow
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
-Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
-Any use of third-party trademarks or logos are subject to those third-party's policies.
+All the references to the microsoft logos and tm of the terms belong to [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general). but for the long term will remove their references
